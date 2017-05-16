@@ -84,45 +84,65 @@ export default {
   data () {
     return {
       servantInfo: {},
-      tableData: [],
       chartOption: [],
-      timeOptions: [
-        {
-          label: '最近7天',
-          value: '1'
-        }, {
-          label: '本月',
-          value: '2'
-        }, {
-          label: '最近半年',
-          value: '3'
-        }
-      ],
-      timeValue: '',
-      chart: '',
-      operationDataCurrentMonth: {},
-      operationDataLast7Days: {},
-      operationDataLastHalfAYear: {}
+      chart: ''
     }
   },
   methods: {
     ...mapActions([
       'showSideBar'
     ]),
-    renderChart (data) {
-      let username = window.localStorage.getItem('username')
-      if (username === 'test2') {
-        this.chartOption = Object.assign({}, this.chartOption, option)
-        let myChart = echarts.init(this.$refs.ai_chart)
-        myChart.setOption(this.chartOption)
+    getData () {
+      let url = '/manage/apartment/data'
+      let apartment = window.localStorage.getItem('apartmentId')
+      if (apartment) {
+        let data = {
+          apartmentId: apartment
+        }
+        fetcher.get(url, data).then((res) => {
+          console.log(res)
+          if (res.success) {
+            let info = res.result
+            let infoDay = []
+            let infoAll = []
+            let infoAppoint = []
+            let infoRent = []
+            for (let i = 0; i < info.length; i++) {
+              infoDay.push(this.dealDate(info[i].apartmentDay))
+              infoAll.push(info[i].rentAll)
+              infoAppoint.push(info[i].appointAll)
+              infoRent.push(info[i].rentNumber)
+            }
+            this.chartOption = Object.assign({}, this.chartOption, option)
+            this.chartOption.xAxis[0].data = infoDay
+            this.chartOption.series[0].data = infoAll
+            this.chartOption.series[1].data = infoAppoint
+            this.chartOption.series[2].data = infoRent
+            let myChart = echarts.init(this.$refs.ai_chart)
+            myChart.setOption(this.chartOption)
+          } else {
+            this.$message({ message: '获取公寓数据失败' })
+          }
+        }, (rej) => {
+          console.log(rej)
+        }).catch((err) => {
+          console.log(err)
+        })
       }
+    },
+    dealDate (date) {
+      let day = new Date(date)
+      let y = day.getFullYear() + '-'
+      let m = (day.getMonth() + 1 < 10 ? '0' + (day.getMonth() + 1) : day.getMonth() + 1) + '-'
+      let d = day.getDate()
+      return y + m + d
     },
     getAccount () {
       let url = '/manage/apartment/search'
       let apartment = window.localStorage.getItem('apartmentId')
-      if (apartment) {
+      if (apartment !== '0') {
         let data = {
-          apartment
+          apartmentId: apartment
         }
         fetcher.get(url, data).then((res) => {
           console.log(res)
@@ -149,24 +169,7 @@ export default {
   },
   mounted () {
     // 加一个默认的初始化图表的
-    this.renderChart()
-  },
-  watch: {
-    timeValue: function () {
-      let value = this.timeValue
-      if (value === '1') {
-        this.renderChart(this.operationDataLast7Days)
-      }
-      if (value === '2') {
-        this.renderChart(this.operationDataCurrentMonth)
-      }
-      if (value === '3') {
-        this.renderChart(this.operationDataLastHalfAYear)
-      }
-    },
-    operationDataLast7Days: function () {
-      this.renderChart(this.operationDataLast7Days)
-    }
+    this.getData()
   }
 }
 </script>
