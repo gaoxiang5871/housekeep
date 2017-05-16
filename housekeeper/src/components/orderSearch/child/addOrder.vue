@@ -52,7 +52,7 @@
         </el-row>
         <el-row>
           <el-col>
-            <el-button type="primary" @click="submitForm('form')">提 交</el-button>
+            <el-button type="primary" @click="submitForm('form')">创建订单</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -119,9 +119,6 @@
         } else {
           return this.userList[num - 1].ownerTel
         }
-      },
-      pages: function () {
-        return Math.ceil(this.totalCount / this.pageSize)
       }
     },
     methods: {
@@ -145,17 +142,18 @@
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.form = Object.assign(this.form, {rentTag: '待出租'})
             console.log(this.form)
-            let url = '/manage/house/addHouse'
+            this.form = Object.assign(this.form, { ownerTel: this.ownerTel })
+            let url = '/manage/order/addOrder'
             fetcher.post(url, this.form).then((res) => {
+              console.log(res)
               if (res.success) {
-                this.$message({ message: '提交成功' })
+                this.$message({ message: '创建订单成功' })
                 setTimeout(() => {
                   location.reload()
                 }, 3000)
               } else {
-                this.$message({ message: '提交失败' })
+                this.$message({ message: '生成订单失败' })
               }
             }, (rej) => {
               console.log(rej)

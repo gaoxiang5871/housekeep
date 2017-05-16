@@ -29,7 +29,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/manage': {
-        target: 'http://192.168.1.141:8080',
+        target: 'http://192.168.1.134:8080',
         changeOrigin: true
       }
     },

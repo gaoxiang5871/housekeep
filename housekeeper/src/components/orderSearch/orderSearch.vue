@@ -5,12 +5,12 @@
       <el-row>
         <el-col :span="7">
           <el-form-item label="起租时间">
-               <el-date-picker v-model="formOrder.timeRange" type="daterange" placeholder="选择日期范围"></el-date-picker>
+               <el-date-picker v-model="timeRange" type="daterange" placeholder="选择日期范围"></el-date-picker>
           </el-form-item>
         </el-col>
         <el-col :span="6" :offset="1">
           <el-form-item label="订单状态">
-             <el-select v-model="formOrder.value" placeholder="订单状态">
+             <el-select v-model="formOrder.orderType" placeholder="订单状态">
               <el-option
                 v-for="item in statusList"
                 :label="item.name"
@@ -21,8 +21,8 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="电话">
-            <el-input v-model="formOrder.orderTel" placeholder="请输入号码"></el-input>
+          <el-form-item label="租客电话">
+            <el-input v-model="formOrder.renterTel" placeholder="请输入号码"></el-input>
           </el-form-item>
         </el-col>
       </el-row>
@@ -34,22 +34,22 @@
         </el-col>
         <el-col :span="6" :offset="1">
           <el-form-item label="租户姓名">
-            <el-input v-model="formOrder.user" placeholder="请输入姓名"></el-input>
+            <el-input v-model="formOrder.renterName" placeholder="请输入姓名"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="6">
           <el-form-item label="月租金">
-            <el-input v-model="formOrder.money" placeholder="请输入月租金"></el-input>
+            <el-input v-model="formOrder.orderPrice" placeholder="请输入月租金"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="4">
-            <el-button type="primary" @click="search">查询</el-button>
+            <el-button type="primary" @click="searchResult">查询</el-button>
         </el-col>
       </el-row>
     </el-form>
   </div>
   <div class="order-content">
-    <el-table :data="orderContent" border style="width: 1020" @cell-click="showDetail">
+    <el-table :data="orderContent" border style="width: 1020">
    <!--      <el-table-column prop="base.orderNum" label="订单ID" align="center" width="110" class-name="orderId"></el-table-column> -->
         <el-table-column label="订单ID" align="center">
         <template scope="scope">
@@ -77,37 +77,42 @@
             :current-page="currentPage"
             :page-size="10"
             layout="total, prev, pager, next"
-            :total="pageContent.totalCount">
+            :total="totalCount">
           </el-pagination>
       </div>
-      <order-details :lg-details="lgdetails" :message="lists" v-on:hello="test"></order-details>
-  </div>
+    </div>
  </div>
 </div>
 </template>
 <script>
 /* global fetcher:true */
-import orderDetails from './child/orderDetails.vue'
 import { mapActions } from 'vuex'
 export default {
   data () {
     return {
-      lists: [],
-      lgdetails: false,
       formOrder: {
-        timeRange: [],
-        kind: '分期',
-        isOver: '',
+        orderType: '',
+        renterTel: '',
         orderId: '',
-        orderTel: '',
-        money: '',
-        value: '',
-        user: ''
+        renterName: '',
+        orderPrice: ''
       },
-      orderContent: [
-      ],
-      statusList: [],
-      pageContent: [],
+      timeRange: [],
+      orderContent: [],
+      statusList: [{
+        name: '待审核',
+        type: '待审核'
+      }, {
+        name: '待支付',
+        type: '待支付'
+      }, {
+        name: '已生效',
+        type: '已生效'
+      }, {
+        name: '已过期',
+        type: '已过期'
+      }],
+      totalCount: 0,
       pageStatus: false,
       currentPage: 1
     }
@@ -116,64 +121,41 @@ export default {
     ...mapActions([
       'showSideBar'
     ]),
-    search () {
-      this.searchResult()
-    },
     searchResult () {
-      let url = '/manage/order/list'
-      let data = {
-        apartmentName: window.localStorage.substationName,
-        startDate: new Date(this.formOrder.timeRange[0]).getTime(),
-        endDate: new Date(this.formOrder.timeRange[1]).getTime(),
-        apartmentOrderStatus: this.formOrder.value,
-        orderNum: this.formOrder.orderId,
-        userCertifiedName: this.formOrder.user,
-        userPhone: this.formOrder.orderTel,
-        monthlyMoney: this.formOrder.money,
-        isOverdue: this.formOrder.isOver,
-        curPage: this.currentPage - 1,
-        pageSize: 10
-      }
-      console.log(data)
-      fetcher.post(url, data).then((res) => {
-        if (res.errorCode === 0) {
-          if (res.data.orderList.length > 0) {
-            this.pageStatus = true
-          }
-          this.orderContent = res.data.orderList
-          this.pageContent = res.data.pageBean
-        } else {
-          this.$message({ message: res.errorMsg })
-        }
-      }, (rej) => {
-        console.log(rej)
-      }).catch((err) => {
-        console.log(err)
-      })
-    },
-    test () {
-      this.lgdetails = false
-    },
-    handleCurrentChange (val) {
-      this.currentPage = val
-      this.searchResult()
-    },
-    showDetail (row, column, cell, event) {
-      console.log(event)
-      if (event.target.className === 'orderNumber') {
-        let url = '/manage/order/list'
+      let url = '/manage/order/search'
+      if (this.timeRange.length > 0) {
+        let startDate = this.timeRange[0]
+        let endDate = this.timeRange[1]
         let data = {
-          apartmentName: window.localStorage.substationName,
-          orderNum: event.target.innerHTML
+          orderType: this.formOrder.orderType,
+          renterTel: this.formOrder.renterTel,
+          id: this.formOrder.orderId,
+          renterName: this.formOrder.renterName,
+          orderPrice: this.formOrder.orderPrice,
+          startDate: startDate,
+          endDate: endDate
         }
-        console.log(data)
         fetcher.post(url, data).then((res) => {
-          if (res.errorCode === 0) {
-            this.lists = res.data.orderList
-            this.lgdetails = true
-            console.log(this.lists)
+          if (res.success) {
+            console.log(res.result)
+            this.orderContent = res.result
+            this.totalCount = res.result.length
           } else {
-            this.$message({ message: res.errorMsg })
+            this.$message({ message: res.errors.messageCn })
+          }
+        }, (rej) => {
+          console.log(rej)
+        }).catch((err) => {
+          console.log(err)
+        })
+      } else {
+        fetcher.post(url, this.formOrder).then((res) => {
+          if (res.success) {
+            console.log(res.result)
+            this.orderContent = res.result
+            this.totalCount = res.result.length
+          } else {
+            this.$message({ message: res.errors.messageCn })
           }
         }, (rej) => {
           console.log(rej)
@@ -182,37 +164,13 @@ export default {
         })
       }
     },
-    getStats () {
-      let url = '/manage/order/statusEnum'
-      let params = {}
-      fetcher.get(url, params).then((res) => {
-        if (res.errorCode === 0) {
-          this.statusList = res.data.orderStatusEnumList
-        }
-      }, (rej) => {
-        console.log(rej)
-      }).catch((err) => {
-        console.log(err)
-      })
+    handleCurrentChange (val) {
+      this.currentPage = val
+      this.searchResult()
     }
-  },
-  components: {
-    orderDetails
   },
   created () {
     this.showSideBar()
-    this.getStats()
-  },
-  filters: {
-    tansForm: function (val) {
-      if (val === 0) {
-        return '否'
-      } else if (val === 1) {
-        return '是'
-      } else {
-        return ''
-      }
-    }
   }
 }
 </script>
