@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jimikongjian.dao.IApartmentInfo">
+    <!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
+    <resultMap id="apartmentInfoMapper" type="com.jimikongjian.models.ApartmentInfo">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="apartmentId" property="apartmentId"  jdbcType="INTEGER"/>
+        <result column="rentAll" property="rentAll"  jdbcType="INTEGER"/>
+        <result column="appointAll" property="appointAll"  jdbcType="INTEGER"/>
+        <result column="rentNumber" property="rentNumber"  jdbcType="INTEGER"/>
+        <result column="apartmentDay" property="apartmentDay" javaType="java.sql.Timestamp"/>
+    </resultMap>
+    <!-- 查询 -->
+    <select id="getApartmentInfoByapartmentId" resultMap="apartmentInfoMapper">
+        SELECT * FROM `apartmentinfo` WHERE apartmentId = #{apartmentId}
+    </select>
+</mapper>

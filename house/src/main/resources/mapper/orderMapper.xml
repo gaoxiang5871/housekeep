@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jimikongjian.dao.IOrder">
+    <!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
+    <resultMap id="orderMapper" type="com.jimikongjian.models.Order">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="houseId" property="houseId"  jdbcType="INTEGER"/>
+        <result column="ownerId" property="ownerId"  jdbcType="INTEGER"/>
+        <result column="renterName" property="renterName" />
+        <result column="orderType" property="orderType" />
+        <result column="orderDate" property="orderDate" javaType="java.sql.Timestamp"/>
+        <result column="startDate" property="orderDate" javaType="java.sql.Timestamp"/>
+        <result column="endDate" property="orderDate" javaType="java.sql.Timestamp"/>
+        <result column="renterTel" property="renterTel" />
+        <result column="orderPrice" property="orderPrice" />
+        <result column="ownerTel" property="ownerTel" />
+    </resultMap>
+    <!-- 查询 -->
+    <select id="getOrder" resultMap="orderMapper">
+        SELECT
+          *
+        FROM
+          `order`
+        WHERE
+          1=1
+        <if test="id != null and id != ''">
+            AND `id` = #{id}
+        </if>
+        <if test="renterName != null and renterName != ''">
+            AND `renterName` = #{renterName}
+        </if>
+        <if test="orderType != null and orderType != ''">
+            AND `orderType` = #{orderType}
+        </if>
+        <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+            AND orderDate BETWEEN #{startDate} AND  #{endDate}
+        </if>
+        <if test="renterTel != null and renterTel != ''">
+            AND `renterTel` = #{renterTel}
+        </if>
+        <if test="orderPrice != null and orderPrice != ''">
+            AND `orderPrice` = #{orderPrice}
+        </if>
+        <if test="ownerTel != null and ownerTel != ''">
+            AND `ownerTel` = #{ownerTel}
+        </if>
+    </select>
+
+    <insert id="insertOrder" parameterType="com.jimikongjian.models.Order">
+        INSERT INTO `order` (houseId, ownerId, renterName, orderType, orderDate, renterTel, orderPrice, ownerTel)
+        VALUES (#{houseId}, #{ownerId}, #{renterName}, #{orderType}, #{orderDate}, #{renterTel}, #{orderPrice}, #{ownerTel})
+    </insert>
+</mapper>
