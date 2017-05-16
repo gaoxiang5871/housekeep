@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2017-05-16 15:47:36
+Date: 2017-05-16 16:59:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -125,15 +125,19 @@ CREATE TABLE `order` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `houseId` int(11) NOT NULL,
   `ownerId` int(11) NOT NULL,
-  `renterId` int(11) NOT NULL,
-  `orderTag` int(11) NOT NULL,
-  `orderDate` varchar(255) NOT NULL,
+  `renterName` varchar(11) NOT NULL,
+  `orderType` varchar(11) NOT NULL,
+  `orderDate` timestamp NOT NULL,
+  `renterTel` varchar(255) NOT NULL,
+  `orderPrice` varchar(255) NOT NULL,
+  `ownerTel` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of order
 -- ----------------------------
+INSERT INTO `order` VALUES ('1', '1', '1', 'asd', 'asd', '2017-05-15 16:56:50', '11111', '123', '12312');
 
 -- ----------------------------
 -- Table structure for `owner`

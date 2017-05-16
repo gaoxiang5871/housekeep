@@ -100,7 +100,6 @@ export default {
           apartmentId: apartment
         }
         fetcher.get(url, data).then((res) => {
-          console.log(res)
           if (res.success) {
             let info = res.result
             let infoDay = []
@@ -140,12 +139,11 @@ export default {
     getAccount () {
       let url = '/manage/apartment/search'
       let apartment = window.localStorage.getItem('apartmentId')
-      if (apartment !== '0') {
+      if (apartment) {
         let data = {
-          apartmentId: apartment
+          apartment: apartment
         }
         fetcher.get(url, data).then((res) => {
-          console.log(res)
           if (res.success) {
             this.servantInfo = res.result[0]
             this.servantInfo.username = window.localStorage.getItem('username')
