@@ -1,0 +1,7 @@
+// 用户
+export const SET_TELEPHONE = 'SET_TELEPHONE'
+export const REMOVE_TELEPHONE = 'REMOVE_TELEPHONE'
+
+// 全局UI
+export const HIDE_SIDERBAR = 'HIDE_SIDERBAR'
+export const SHOW_SIDERBAR = 'SHOW_SIDERBAR'
