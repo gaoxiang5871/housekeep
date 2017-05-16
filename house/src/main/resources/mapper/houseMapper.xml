@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jimikongjian.dao.IHouse">
+    <!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
+    <resultMap id="houseMapper" type="com.jimikongjian.models.House">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="city" property="city" />
+        <result column="district" property="district" />
+        <result column="bussiness" property="bussiness" />
+        <result column="community" property="community" />
+        <result column="buildingNum" property="buildingNum" />
+        <result column="initNum" property="initNum" />
+        <result column="houseNum" property="houseNum" />
+        <result column="acrea" property="acrea" javaType="java.lang.Double"/>
+        <result column="price" property="price" javaType="java.lang.Double"/>
+        <result column="floor" property="floor" />
+        <result column="orient" property="orient" />
+        <result column="decoration" property="decoration" />
+        <result column="rentType" property="rentType" />
+        <result column="rentTag" property="rentTag" />
+        <result column="ownerId" property="ownerId" jdbcType="INTEGER" />
+        <result column="renterId" property="renterId" jdbcType="INTEGER" />
+        <result column="owner" property="owner" />
+    </resultMap>
+    
+    <!-- 查询 -->
+    <select id="getHouseList" resultMap="houseMapper">
+    	SELECT `owner`.owner, house.* FROM `house` INNER JOIN owner ON house.`ownerId` = `owner`.`id` WHERE 1 = 1
+    	<!-- <if test="_parameter != null and _parameter != ''"> -->
+    	<if test="city != null and city != ''">
+    		AND city = #{city}
+    	</if>
+    	<if test="bussiness != null and bussiness != ''">
+    		AND bussiness = #{bussiness}
+    	</if>
+    	<if test="community != null and community != ''">
+    		AND community = #{community}
+    	</if>
+    	<if test="buildingNum != null and buildingNum != ''">
+    		AND buildingNum = #{buildingNum}
+    	</if>
+    	<if test="initNum != null and initNum != ''">
+    		AND initNum = #{initNum}
+    	</if>
+    	<if test="houseNum != null and houseNum != ''">
+    		AND houseNum = #{houseNum}
+    	</if>
+    	<if test="rentType != null and rentType != ''">
+    		AND rentType = #{rentType}
+    	</if>
+    	<if test="rentTag != null and rentTag != ''">
+    		AND rentTag = #{rentTag}
+    	</if>
+    	<if test="ownerId != null and ownerId != ''">
+    		AND ownerId = #{ownerId}
+    	</if>
+    </select>
+
+	<!-- 添加预约  -->
+	<insert id="addAppoint" parameterType="com.jimikongjian.models.Appoint">
+        INSERT INTO `appoint`(houseId, ownerId, renterName, renterPhone, renterSex, date, time) VALUES (#{houseId},#{ownerId},#{renterName},#{renterPhone},#{renterSex},#{date},#{time})
+    </insert>
+    
+    <!-- 添加房源  -->
+	<insert id="addHouse" parameterType="com.jimikongjian.models.House">
+        INSERT INTO `house`(city, district, bussiness, community, buildingNum, initNum, houseNum, acrea, price, floor, orient, decoration, rentType, rentTag, ownerId) VALUES (#{city},#{district},#{bussiness},#{community},#{buildingNum},#{initNum},#{houseNum},#{acrea},#{price},#{floor},#{orient},#{decoration},#{rentType},#{rentTag},#{ownerId})
+    </insert>
+    
+    <!--更新租赁状态-->
+    <update id="changeStyle" parameterType="com.jimikongjian.models.House">
+        UPDATE `house` SET rentTag = #{rentTag} WHERE id = #{id}
+    </update>
+    
+    <!--更新房东信息-->
+    <update id="changeOwner" parameterType="com.jimikongjian.models.House">
+        UPDATE `house` SET ownerId = #{ownerId} WHERE id = #{id}
+    </update>
+</mapper>

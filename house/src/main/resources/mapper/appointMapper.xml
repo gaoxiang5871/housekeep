@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jimikongjian.dao.IAppoint">
+    <!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
+    <resultMap id="appointMapper" type="com.jimikongjian.models.Appoint">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="houseId" property="houseId" jdbcType="INTEGER" />
+        <result column="ownerId" property="ownerId" jdbcType="INTEGER" />
+        <result column="renterName" property="renterName" />
+        <result column="renterPhone" property="renterPhone" />
+        <result column="renterSex" property="renterSex" />
+        <result column="date" property="date" javaType="java.sql.Timestamp"/>
+        <result column="time" property="time" />
+        <result column="bussiness" property="bussiness" />
+        <result column="community" property="community" />
+        <result column="ownerTel" property="ownerTel" />
+        <result column="owner" property="owner" />
+    </resultMap>
+    
+    <!-- 查询 -->
+    <select id="getAppointList" resultMap="appointMapper">
+    	SELECT house.bussiness, house.community, appoint.*, owner.ownerTel, owner.owner FROM house INNER JOIN appoint ON house.id = appoint.houseId INNER JOIN owner ON owner.id = appoint.ownerId WHERE 1 = 1
+    	<!-- <if test="_parameter != null and _parameter != ''"> -->
+    	<if test="bussiness != null and bussiness != ''">
+    		AND `bussiness` = #{bussiness}
+    	</if>
+    	<if test="community != null and community != ''">
+    		AND `community` = #{community}
+    	</if>
+    	<if test="date != null and date != ''">
+    		AND `date` = #{date}
+    	</if>
+    	<if test="renterPhone != null and renterPhone != ''">
+    		AND renterPhone = #{renterPhone}
+    	</if>
+    	<if test="ownerId != null and ownerId != ''">
+    		AND appoint.ownerId = #{ownerId}
+    	</if>
+    </select>
+
+</mapper>

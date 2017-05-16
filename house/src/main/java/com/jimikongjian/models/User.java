@@ -1,0 +1,40 @@
+package com.jimikongjian.models;
+
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Repository;
+
+
+
+@Scope("prototype")
+@Repository("user")
+public class User {
+	private int id;
+	private String userName;
+	private String passWord;
+	private int apartmentId;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getPassWord() {
+		return passWord;
+	}
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
+	}
+	public int getApartmentId() {
+		return apartmentId;
+	}
+	public void setApartmentId(int apartmentId) {
+		this.apartmentId = apartmentId;
+	}
+	
+}

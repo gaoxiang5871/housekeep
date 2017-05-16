@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jimikongjian.dao.IApartment">
+    <!--设置domain类和数据库中表的字段一一对应，注意数据库字段和domain类中的字段名称不致，此处一定要！-->
+    <resultMap id="apartmentMapper" type="com.jimikongjian.models.Apartment">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="apartmentName" property="apartmentName" />
+        <result column="companyName" property="companyName" />
+        <result column="allNum" property="allNum" />
+        <result column="rentNum" property="rentNum" />
+        <result column="appointNum" property="appointNum" />
+    </resultMap>
+    
+    <resultMap id="servantMapper" type="com.jimikongjian.models.Servant">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="owner" property="owner" />
+        <result column="ownerTel" property="ownerTel" />
+    </resultMap>
+    <!-- 查询 -->
+    <select id="getApartmentById" resultMap="apartmentMapper">
+        SELECT * FROM `apartment` WHERE id = #{id}
+    </select>
+    <!-- 所有房东  -->
+    <select id="getAllOwner" resultMap="servantMapper">
+        SELECT * FROM `owner`
+    </select>
+</mapper>
