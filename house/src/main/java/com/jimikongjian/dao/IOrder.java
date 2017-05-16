@@ -1,8 +1,6 @@
 package com.jimikongjian.dao;
 
-import com.jimikongjian.models.Apartment;
 import com.jimikongjian.models.Order;
-import com.jimikongjian.models.Servant;
 
 import java.util.List;
 
@@ -10,15 +8,23 @@ import java.util.List;
 public interface IOrder {
 	
 	 /**
-     * 通过公寓id，查询数据库中相应的公寓
+     * 通过查询条件，查询数据库中相应的订单信息
      * @param order
      * @return
      */
     public List<Order> getOrder(Order order);
     
     /**
-     * 插入订单
+     * 新建订单
      * @return
      */
     public void insertOrder(Order order);
+
+    /**
+     * 修改订单状态
+     * @param id
+     * @param orderTag
+     * @return
+     */
+    public boolean changeOrder(Order order);
 }

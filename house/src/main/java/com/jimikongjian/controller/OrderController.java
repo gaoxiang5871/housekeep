@@ -5,7 +5,6 @@ import com.jimikongjian.models.Message;
 import com.jimikongjian.models.Order;
 import com.jimikongjian.models.ResponseMessage;
 import com.jimikongjian.service.message.ResponseMessageService;
-import com.sun.org.apache.xpath.internal.operations.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,7 @@ public class OrderController {
 	
 	@Autowired
 	private ResponseMessageService res;
-	//用户登录判断
+	//订单哈讯
 	@RequestMapping(value="/search", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseMessage login(@RequestBody Order order){
@@ -31,11 +30,19 @@ public class OrderController {
 		return res.makeMessage(Message.NO_HAVE_USER);
 	}
 	
-	/*新建链接*/
+	/*新建订单*/
 	@RequestMapping(value="/addOrder", method = RequestMethod.POST)
 	@ResponseBody
 	public ResponseMessage newUser(@RequestBody Order order){
 		orderMapper.insertOrder(order);
+		return res.makeMessage(Message.SUCCESS);
+	}
+	
+	/*订单状态更改*/
+	@RequestMapping(value="/tagChange", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseMessage tagChange(@RequestBody Order order1){
+		orderMapper.changeOrder(order1);
 		return res.makeMessage(Message.SUCCESS);
 	}
 }

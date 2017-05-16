@@ -28,6 +28,8 @@ public class Order {
     private String orderPrice;
 
     private String ownerTel;
+    
+	private String orderTag;
 
     public int getId() {
         return id;
@@ -116,4 +118,10 @@ public class Order {
     public void setOwnerTel(String ownerTel) {
         this.ownerTel = ownerTel;
     }
+    public String getOrderTag() {
+		return orderTag;
+	}
+	public void setOrderTag(String orderTag) {
+		this.orderTag = orderTag;
+	}
 }

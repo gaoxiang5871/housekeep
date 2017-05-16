@@ -39,7 +39,9 @@
           </el-col>
           <el-col :span="5">
             <el-form-item label="租期" required prop="orderType">
-              <el-input v-model="form.orderType"></el-input>
+              <el-select v-model="form.orderType">
+                <el-option :label="tag.name" :value="tag.id" v-for="tag in tagList" :key="tag.id"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -83,6 +85,19 @@
           orderType: '',
           orderDate: ''
         },
+        tagList: [{
+          name: '3个月',
+          id: '3个月'
+        }, {
+          name: '6个月',
+          id: '6个月'
+        }, {
+          name: '9个月',
+          id: '9个月'
+        }, {
+          name: '12个月',
+          id: '12个月'
+        }],
         renttype: [],
         rules: {
           renterName: [
@@ -143,7 +158,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             console.log(this.form)
-            this.form = Object.assign(this.form, { ownerTel: this.ownerTel })
+            this.form = Object.assign(this.form, { ownerTel: this.ownerTel, orderTag: '待审核' })
             let url = '/manage/order/addOrder'
             fetcher.post(url, this.form).then((res) => {
               console.log(res)

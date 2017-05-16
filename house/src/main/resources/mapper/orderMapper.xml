@@ -46,8 +46,14 @@
         </if>
     </select>
 
+	<!-- 新建订单 -->
     <insert id="insertOrder" parameterType="com.jimikongjian.models.Order">
-        INSERT INTO `order` (houseId, ownerId, renterName, orderType, orderDate, renterTel, orderPrice, ownerTel)
-        VALUES (#{houseId}, #{ownerId}, #{renterName}, #{orderType}, #{orderDate}, #{renterTel}, #{orderPrice}, #{ownerTel})
+        INSERT INTO `order` (houseId, ownerId, renterName, orderType, orderDate, renterTel, orderPrice, ownerTel, orderTag)
+        VALUES (#{houseId}, #{ownerId}, #{renterName}, #{orderType}, #{orderDate}, #{renterTel}, #{orderPrice}, #{ownerTel}, #{orderTag})
     </insert>
+    
+    <!-- 修改订单状态 -->
+    <update id="changeOrder" parameterType="com.jimikongjian.models.Order">
+        UPDATE `order` SET orderTag = #{orderTag} WHERE id = #{id}
+    </update>
 </mapper>

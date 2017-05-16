@@ -1,6 +1,5 @@
 package com.jimikongjian.controller;
 
-import com.jimikongjian.dao.IApartment;
 import com.jimikongjian.dao.IApartmentInfo;
 import com.jimikongjian.models.*;
 import com.jimikongjian.service.message.ResponseMessageService;
