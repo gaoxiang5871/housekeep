@@ -41,7 +41,7 @@ DROP TABLE IF EXISTS `apartmentinfo`;
 CREATE TABLE `apartmentinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `apartmentId` int(11) NOT NULL,
-  `apartmentDay` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `apartmentDay` timestamp NOT NULL,
   `rentAll` int(11) NOT NULL,
   `appointAll` int(11) NOT NULL,
   `rentNumber` int(11) NOT NULL,

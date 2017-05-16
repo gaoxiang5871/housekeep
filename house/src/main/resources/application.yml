@@ -9,7 +9,7 @@ server:
 c3p0:
   jdbcUrl: "jdbc:mysql://localhost:3306/housekeep?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false&useSSL=false"
   user: "root"
-  password: "root"
+  password: "fuxiuyang"
   driverClass: "com.mysql.jdbc.Driver"
   minPoolSize: 2
   maxPoolSize: 10
