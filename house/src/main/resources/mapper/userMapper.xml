@@ -22,6 +22,11 @@
     <update id="changeWord" parameterType="com.jimikongjian.models.User">
         UPDATE `user` SET passWord = #{password} WHERE userName = #{username}
     </update>
+    
+    <!--设置公寓-->
+    <update id="setApartment" parameterType="com.jimikongjian.models.User">
+        UPDATE `user` SET apartmentId = #{apartmentId} WHERE userName = #{userName}
+    </update>
     <!-- <update id="updateUserPassword" parameterType="com.jimikongjian.models.User">
         UPDATE `user` SET password = #{password} WHERE email = #{email}
     </update> -->

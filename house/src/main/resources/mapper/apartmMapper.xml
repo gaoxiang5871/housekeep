@@ -20,8 +20,18 @@
     <select id="getApartmentById" resultMap="apartmentMapper">
         SELECT * FROM `apartment` WHERE id = #{id}
     </select>
+
+    <select id="getApartmentByName" resultMap="apartmentMapper">
+        SELECT * FROM `apartment` WHERE companyName = #{companyName} AND apartmentName = #{apartmentName}
+    </select>
+    
     <!-- 所有房东  -->
     <select id="getAllOwner" resultMap="servantMapper">
         SELECT * FROM `owner`
     </select>
+    
+    <!-- 添加公寓  -->
+	<insert id="addApartment" parameterType="com.jimikongjian.models.Apartment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `apartment`(apartmentName, companyName, allNum, rentNum, appointNum) VALUES (#{apartmentName},#{companyName},#{allNum},#{rentNum},#{appointNum})
+    </insert>
 </mapper>

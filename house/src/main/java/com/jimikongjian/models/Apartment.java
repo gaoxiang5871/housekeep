@@ -14,6 +14,13 @@ public class Apartment {
 	private String allNum;
 	private String rentNum;
 	private String appointNum;
+	private String userName;
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 	public int getId() {
 		return id;
 	}
@@ -47,7 +54,7 @@ public class Apartment {
 	public String getAppointNum() {
 		return appointNum;
 	}
-	public void setAppointtNum(String appointNum) {
+	public void setAppointNum(String appointNum) {
 		this.appointNum = appointNum;
 	}
 }

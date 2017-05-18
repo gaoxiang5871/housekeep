@@ -34,8 +34,16 @@ public interface IUser {
      * @param password
      * @return
      */
-    public boolean changeWord(@Param("username") String username, @Param("password") String password);
+    public boolean setApartment(User user);
 
+    /**
+     * 注册新用户
+     * @param username
+     * @param password
+     * @return
+     */
+    public boolean changeWord(@Param("username") String username, @Param("password") String password);
+    
     /**
      * 通过邮箱地址查询用户信息,返回一个用户列表,如果列表中含有一个或者没有数据,说明正确,如果含有两个以上包含两个,说明查询错误,或者是数据库中数据发生了错误
      * @param email

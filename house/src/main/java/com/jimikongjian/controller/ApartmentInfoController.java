@@ -25,6 +25,6 @@ public class ApartmentInfoController {
 		if (list.size() > 0) {
 			return res.makeMessage(list, Message.SUCCESS);
 		}
-		return res.makeMessage(Message.NO_HAVE_USER);
+		return res.makeMessage(Message.NO_APARTMENT);
 	}
 }

@@ -30,6 +30,8 @@ public class ErrorMessageService {
             return isHaveUser();
         }else if (error == Message.NO_HOUSE){
             return noHouse();
+        }else if (error == Message.NO_APARTMENT){
+            return noApartment();
         }else if (error == Message.NO_APPOINT){
             return noAppoint();
         }else if (error == Message.PASSWORD_FORMAT_ERROR){
@@ -118,6 +120,14 @@ public class ErrorMessageService {
      */
     public ErrorMessage noHouse(){
         return makeError(Message.NO_HOUSE,"No House","没有符合的房源");
+    }
+    
+    /**
+     * 没有该公寓数据
+     * @return
+     */
+    public ErrorMessage noApartment(){
+        return makeError(Message.NO_APARTMENT,"No Apartment","没有该公寓数据");
     }
     
     /**

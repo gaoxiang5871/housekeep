@@ -86,10 +86,19 @@ export default {
     submit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          let url = '/manage/substation/auth'
-          let data = this.form
+          let url = '/manage/apartment/addApartment'
+          let userName = window.localStorage.getItem('username')
+          let data = Object.assign(this.form, { userName: userName })
           fetcher.post(url, data).then((res) => {
-            console.log(res)
+            if (res.success) {
+              this.$message({ message: '提交成功' })
+              let apartment = res.result[0].id
+              window.localStorage.setItem('apartmentId', apartment)
+              setTimeout(() => {
+                this.$router.push({path: '/apartIndex'})
+                location.reload()
+              }, 1000)
+            }
           }, (rej) => {
             console.log(rej)
           })

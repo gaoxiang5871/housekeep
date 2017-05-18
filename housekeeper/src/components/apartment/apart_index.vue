@@ -65,6 +65,11 @@
       </el-col>
     </el-row>
     <el-row>
+      <el-col :span="2" :offset="21">
+        <el-button type="text" @click="search">公寓操作记录</el-button>
+      </el-col>
+    </el-row>
+    <el-row>
       <el-row type='flex' align='center'>
         <el-col :span="24">
           <div class="grid-content paddingTop" ref="ai_chart" id='chart'>
@@ -95,7 +100,7 @@ export default {
     getData () {
       let url = '/manage/apartment/data'
       let apartment = window.localStorage.getItem('apartmentId')
-      if (apartment) {
+      if (apartment !== '0') {
         let data = {
           apartmentId: apartment
         }
@@ -120,7 +125,7 @@ export default {
             let myChart = echarts.init(this.$refs.ai_chart)
             myChart.setOption(this.chartOption)
           } else {
-            this.$message({ message: '获取公寓数据失败' })
+            this.$message({ message: res.errors.messageCn })
           }
         }, (rej) => {
           console.log(rej)
@@ -159,6 +164,20 @@ export default {
     },
     jump () {
       this.$router.push('/apartauth')
+    },
+    search () {
+      let url = '/manage/activity/search'
+      fetcher.get(url).then((res) => {
+        if (res.success) {
+          console.log(res)
+        } else {
+          this.$message({ message: '修改失败' })
+        }
+      }, (rej) => {
+        console.log(rej)
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   },
   created () {
@@ -172,5 +191,7 @@ export default {
 }
 </script>
 <style lang='less' scoped>
-
+.el-row {
+  margin-bottom: 20px;
+}
 </style>

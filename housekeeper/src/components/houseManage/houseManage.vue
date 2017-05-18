@@ -71,11 +71,11 @@
       </el-form>
     </div>
     <div class="house-content" v-if="searchTag">
-    	<el-row>
-          <el-col :span="4" :offset="1">
-            <el-button type="primary" @click="change">管家变更</el-button>
-          </el-col>
-        </el-row>
+    	<el-row v-if="show()">
+        <el-col :span="4" :offset="1">
+          <el-button type="primary" @click="change">管家变更</el-button>
+        </el-col>
+      </el-row>
       <el-table :data="queryData" border style="width: 100%" @selection-change="handleSelectionChange" empty-text="当前条件下无房源">
         <el-table-column type="selection"></el-table-column>
         <el-table-column prop="rentType" label="类型" align="left"></el-table-column>
@@ -240,6 +240,14 @@ export default {
     ...mapActions([
       'showSideBar'
     ]),
+    show () {
+      let apartment = window.localStorage.getItem('apartmentId')
+      if (apartment !== '0') {
+        return true
+      } else {
+        return false
+      }
+    },
     getServant () {
       let url = '/manage/apartment/allServant'
       fetcher.get(url).then((res) => {
@@ -285,7 +293,7 @@ export default {
       if (this.multipleSelection.length === 0) {
         this.$message({ message: '请先选择房源' })
       } else if (this.multipleSelection.length > 1) {
-        this.$message({ message: '请先选择一个房源' })
+        this.$message({ message: '请选择一个房源' })
       } else {
         this.changeTag = true
       }
@@ -301,6 +309,28 @@ export default {
           this.$message({ message: '修改成功' })
           this.changeTag = false
           this.searchTag = false
+          let act = '修改管家'
+          this.setActivity(this.multipleSelection[0].id, act)
+        } else {
+          this.$message({ message: '修改失败' })
+        }
+      }, (rej) => {
+        console.log(rej)
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    setActivity (houseId, activityTag) {
+      let username = window.localStorage.getItem('username')
+      let url = '/manage/activity/addActivity'
+      let data = {
+        userName: username,
+        houseId: houseId,
+        activityTag: activityTag
+      }
+      fetcher.post(url, data).then((res) => {
+        if (res.success) {
+          console.log(res)
         } else {
           this.$message({ message: '修改失败' })
         }
@@ -357,15 +387,25 @@ export default {
       }
     },
     isShow (status) {
-      if (status === '待出租') {
-        return true
+      let apartment = window.localStorage.getItem('apartmentId')
+      if (apartment !== '0') {
+        if (status === '待出租') {
+          return true
+        } else {
+          return false
+        }
       } else {
         return false
       }
     },
     noShow (status) {
-      if (status === '已租出') {
-        return true
+      let apartment = window.localStorage.getItem('apartmentId')
+      if (apartment !== '0') {
+        if (status === '已租出') {
+          return true
+        } else {
+          return false
+        }
       } else {
         return false
       }

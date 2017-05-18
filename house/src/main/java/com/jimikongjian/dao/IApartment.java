@@ -27,4 +27,11 @@ public interface IApartment {
      * @return
      */
     public List<Apartment> getApartmentByName(Apartment apartment);
+    
+    /**
+     * 添加公寓
+     * @param apartment
+     * @return
+     */
+    public void addApartment(Apartment apartment);
 }

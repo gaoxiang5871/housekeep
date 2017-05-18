@@ -67,7 +67,7 @@
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template scope="scope">
-            <el-button size="mini" type="primary" @click="change(scope.row)">状态更改</el-button>
+            <el-button size="mini" type="primary" v-if="show()" @click="change(scope.row)">状态更改</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -140,6 +140,14 @@ export default {
     ...mapActions([
       'showSideBar'
     ]),
+    show () {
+      let apartment = window.localStorage.getItem('apartmentId')
+      if (apartment !== '0') {
+        return true
+      } else {
+        return false
+      }
+    },
     searchResult () {
       let url = '/manage/order/search'
       if (this.timeRange.length > 0) {

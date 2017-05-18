@@ -26,6 +26,11 @@ public class Message {
     public static final int NO_HOUSE = 2000;
     
     /**
+     * 没有该公寓数据
+     */
+    public static final int NO_APARTMENT = 4000;
+    
+    /**
      * 没有符合的预约信息
      */
     public static final int NO_APPOINT = 3000;
