@@ -10,10 +10,28 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2017-05-16 16:59:30
+Date: 2017-05-18 15:57:24
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `activity`
+-- ----------------------------
+DROP TABLE IF EXISTS `activity`;
+CREATE TABLE `activity` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(255) NOT NULL,
+  `activityTag` varchar(255) NOT NULL,
+  `houseId` int(11) NOT NULL,
+  `activityDate` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of activity
+-- ----------------------------
+INSERT INTO `activity` VALUES ('1', 'test1', '添加房源', '6', '2017-05-18 15:57:02');
 
 -- ----------------------------
 -- Table structure for `apartment`
@@ -41,7 +59,7 @@ DROP TABLE IF EXISTS `apartmentinfo`;
 CREATE TABLE `apartmentinfo` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `apartmentId` int(11) NOT NULL,
-  `apartmentDay` timestamp NOT NULL,
+  `apartmentDay` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
   `rentAll` int(11) NOT NULL,
   `appointAll` int(11) NOT NULL,
   `rentNumber` int(11) NOT NULL,
@@ -52,8 +70,8 @@ CREATE TABLE `apartmentinfo` (
 -- Records of apartmentinfo
 -- ----------------------------
 INSERT INTO `apartmentinfo` VALUES ('1', '1', '2017-05-12 00:00:00', '10', '2', '0');
-INSERT INTO `apartmentinfo` VALUES ('2', '1', '2017-05-16 15:43:55', '10', '4', '1');
-INSERT INTO `apartmentinfo` VALUES ('3', '1', '2017-05-16 15:43:57', '10', '0', '2');
+INSERT INTO `apartmentinfo` VALUES ('2', '1', '2017-05-14 00:00:00', '10', '4', '1');
+INSERT INTO `apartmentinfo` VALUES ('3', '1', '2017-05-15 00:00:00', '10', '0', '2');
 INSERT INTO `apartmentinfo` VALUES ('4', '1', '2017-05-16 15:44:01', '10', '1', '1');
 
 -- ----------------------------
@@ -131,13 +149,14 @@ CREATE TABLE `order` (
   `renterTel` varchar(255) NOT NULL,
   `orderPrice` varchar(255) NOT NULL,
   `ownerTel` varchar(255) NOT NULL,
+  `orderTag` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of order
 -- ----------------------------
-INSERT INTO `order` VALUES ('1', '1', '1', 'asd', 'asd', '2017-05-15 16:56:50', '11111', '123', '12312');
+INSERT INTO `order` VALUES ('1', '1', '1', '小明', '6个月', '2017-05-15 16:56:50', '13322489650', '2300', '13322331133', '待审核');
 
 -- ----------------------------
 -- Table structure for `owner`
