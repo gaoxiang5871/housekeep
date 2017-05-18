@@ -39,7 +39,7 @@
       <el-row>
         <el-col>
           <el-form-item class="tend">
-            <el-button type="primary" class='submit' @click.stop.prevent="submit">提交</el-button>
+            <el-button type="primary" class='submit' @click.stop.prevent="submit('form')">提交</el-button>
           </el-form-item>
         </el-col>
       </el-row>
@@ -83,13 +83,19 @@ export default {
     ...mapActions([
       'showSideBar'
     ]),
-    submit () {
-      let url = '/manage/substation/auth'
-      let data = this.form
-      fetcher.post(url, data).then((res) => {
-        console.log(res)
-      }, (rej) => {
-        console.log(rej)
+    submit (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let url = '/manage/substation/auth'
+          let data = this.form
+          fetcher.post(url, data).then((res) => {
+            console.log(res)
+          }, (rej) => {
+            console.log(rej)
+          })
+        } else {
+          return false
+        }
       })
     }
   },
