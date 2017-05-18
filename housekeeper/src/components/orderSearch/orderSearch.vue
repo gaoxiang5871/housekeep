@@ -210,6 +210,28 @@ export default {
       this.changeTag = true
       this.orderData = obj
     },
+    setActivity (houseId, activityTag) {
+      let username = window.localStorage.getItem('username')
+      let apartment = window.localStorage.getItem('apartmentId')
+      let url = '/manage/activity/addActivity'
+      let data = {
+        userName: username,
+        houseId: houseId,
+        activityTag: activityTag,
+        apartmentId: apartment
+      }
+      fetcher.post(url, data).then((res) => {
+        if (res.success) {
+          console.log(res)
+        } else {
+          this.$message({ message: '未知错误' })
+        }
+      }, (rej) => {
+        console.log(rej)
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
     tagChange () {
       if (this.orderData.orderTag === this.orderChange) {
         this.$message({ message: '请正确修改订单状态' })
@@ -223,6 +245,8 @@ export default {
           if (res.success) {
             this.$message({ message: '订单修改成功' })
             this.changeTag = false
+            let act = '修改订单状态'
+            this.setActivity(this.orderData.id, act)
           } else {
             this.$message({ message: res.errors.messageCn })
           }

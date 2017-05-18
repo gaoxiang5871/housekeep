@@ -12,10 +12,10 @@
 
     <!-- 查询 -->
     <select id="getActivity" resultMap="activityMapper">
-        SELECT * FROM `activity`
+        SELECT * FROM `activity` WHERE apartmentId = #{apartmentId}
     </select>
     <!-- 所有房东  -->
     <select id="insertActivity" parameterType="com.jimikongjian.models.Activity">
-        INSERT INTO `activity` (userName, activityTag, houseId) VALUES (#{userName}, #{activityTag}, #{houseId})
+        INSERT INTO `activity` (userName, activityTag, houseId, apartmentId) VALUES (#{userName}, #{activityTag}, #{houseId}, #{apartmentId})
     </select>
 </mapper>

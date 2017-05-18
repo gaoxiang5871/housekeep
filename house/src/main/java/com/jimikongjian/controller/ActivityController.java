@@ -1,10 +1,8 @@
 package com.jimikongjian.controller;
 
 import com.jimikongjian.dao.IActivity;
-import com.jimikongjian.dao.IOrder;
 import com.jimikongjian.models.Activity;
 import com.jimikongjian.models.Message;
-import com.jimikongjian.models.Order;
 import com.jimikongjian.models.ResponseMessage;
 import com.jimikongjian.service.message.ResponseMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +22,8 @@ public class ActivityController {
 	//订单哈讯
 	@RequestMapping(value="/search", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseMessage search(){
-		List<Activity> list = activityMapper.getActivity();
+	public ResponseMessage search(@RequestParam(name="apartmentId", defaultValue = "0") Integer apartmentId){
+		List<Activity> list = activityMapper.getActivity(apartmentId);
 		if (list.size() > 0) {
 			return res.makeMessage(list, Message.SUCCESS);
 		}

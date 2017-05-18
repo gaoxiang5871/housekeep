@@ -64,11 +64,19 @@
         </div>
       </el-col>
     </el-row>
-    <el-row>
+    <el-row v-if="show()">
       <el-col :span="2" :offset="21">
         <el-button type="text" @click="search">公寓操作记录</el-button>
       </el-col>
     </el-row>
+    <el-dialog v-model="searchTag" :show-close="false">
+      <el-table :data="queryData" border style="width: 100%" empty-text="无操作记录">
+        <el-table-column prop="userName" label="操作账户" align="left"></el-table-column>
+        <el-table-column prop="houseId" label="操作房屋ID"></el-table-column>
+        <el-table-column prop="activityTag" label="操作内容"></el-table-column>
+        <el-table-column prop="activityDate" label="操作时间"></el-table-column>
+      </el-table>
+    </el-dialog>
     <el-row>
       <el-row type='flex' align='center'>
         <el-col :span="24">
@@ -90,13 +98,23 @@ export default {
     return {
       servantInfo: {},
       chartOption: [],
-      chart: ''
+      chart: '',
+      searchTag: false,
+      queryData: []
     }
   },
   methods: {
     ...mapActions([
       'showSideBar'
     ]),
+    show () {
+      let apartment = window.localStorage.getItem('apartmentId')
+      if (apartment !== '0') {
+        return true
+      } else {
+        return false
+      }
+    },
     getData () {
       let url = '/manage/apartment/data'
       let apartment = window.localStorage.getItem('apartmentId')
@@ -134,13 +152,6 @@ export default {
         })
       }
     },
-    dealDate (date) {
-      let day = new Date(date)
-      let y = day.getFullYear() + '-'
-      let m = (day.getMonth() + 1 < 10 ? '0' + (day.getMonth() + 1) : day.getMonth() + 1) + '-'
-      let d = day.getDate()
-      return y + m + d
-    },
     getAccount () {
       let url = '/manage/apartment/search'
       let apartment = window.localStorage.getItem('apartmentId')
@@ -165,13 +176,29 @@ export default {
     jump () {
       this.$router.push('/apartauth')
     },
+    dealDate (date) {
+      let day = new Date(date)
+      let y = day.getFullYear() + '-'
+      let m = (day.getMonth() + 1 < 10 ? '0' + (day.getMonth() + 1) : day.getMonth() + 1) + '-'
+      let d = day.getDate()
+      return y + m + d
+    },
     search () {
       let url = '/manage/activity/search'
-      fetcher.get(url).then((res) => {
+      let apartment = window.localStorage.getItem('apartmentId')
+      let data = {
+        apartmentId: apartment
+      }
+      fetcher.get(url, data).then((res) => {
+        this.searchTag = true
         if (res.success) {
           console.log(res)
+          for (let i = 0; i < res.result.length; i++) {
+            res.result[i].activityDate = this.dealDate(res.result[i].activityDate)
+          }
+          this.queryData = res.result
         } else {
-          this.$message({ message: '修改失败' })
+          this.$message({ message: '未知错误' })
         }
       }, (rej) => {
         console.log(rej)

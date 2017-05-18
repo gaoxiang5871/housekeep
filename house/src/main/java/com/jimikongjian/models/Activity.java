@@ -15,7 +15,9 @@ public class Activity {
 
     private int houseId;
 
-    private Timestamp activityDate;
+	private Timestamp activityDate;
+    
+    private int apartmentId;
 
     public int getId() {
         return id;
@@ -56,4 +58,12 @@ public class Activity {
     public void setActivityDate(Timestamp activityDate) {
         this.activityDate = activityDate;
     }
+    
+    public int getApartmentId() {
+		return apartmentId;
+	}
+
+	public void setApartmentId(int apartmentId) {
+		this.apartmentId = apartmentId;
+	}
 }

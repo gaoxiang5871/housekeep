@@ -322,17 +322,19 @@ export default {
     },
     setActivity (houseId, activityTag) {
       let username = window.localStorage.getItem('username')
+      let apartment = window.localStorage.getItem('apartmentId')
       let url = '/manage/activity/addActivity'
       let data = {
         userName: username,
         houseId: houseId,
-        activityTag: activityTag
+        activityTag: activityTag,
+        apartmentId: apartment
       }
       fetcher.post(url, data).then((res) => {
         if (res.success) {
           console.log(res)
         } else {
-          this.$message({ message: '修改失败' })
+          this.$message({ message: '未知错误' })
         }
       }, (rej) => {
         console.log(rej)
@@ -341,50 +343,25 @@ export default {
       })
     },
     upDown (obj, tag) {
-      if (obj) {
-        let url = '/manage/house/changeStyle'
-        let data = {
-          id: obj.id,
-          rentTag: tag ? '待出租' : '已租出'
-        }
-        fetcher.post(url, data).then((res) => {
-          if (res.success) {
-            this.$message({ message: '修改成功' })
-            this.searchTag = false
-          } else {
-            this.$message({ message: res.errorMsg })
-          }
-        }, (rej) => {
-          console.log(rej)
-        }).catch((err) => {
-          console.log(err)
-        })
-      } else {
-        if (this.multipleSelection.length === 0) {
-          this.$message({ message: '请先选择房源' })
-        } else {
-          let idList = []
-          for (let i = 0; i < this.multipleSelection.length; i++) {
-            idList.push(this.multipleSelection[i].id)
-          }
-          let url = '/manage/house/changeHoseOverdue'
-          let data = {
-            houseId: idList.join(','),
-            changeStatus: tag ? '待出租' : '已租出'
-          }
-          fetcher.post(url, data).then((res) => {
-            if (res.errorCode === 0) {
-              this.searchTag = false
-            } else {
-              this.$message({ message: res.errorMsg })
-            }
-          }, (rej) => {
-            console.log(rej)
-          }).catch((err) => {
-            console.log(err)
-          })
-        }
+      let url = '/manage/house/changeStyle'
+      let data = {
+        id: obj.id,
+        rentTag: tag ? '待出租' : '已租出'
       }
+      fetcher.post(url, data).then((res) => {
+        if (res.success) {
+          this.$message({ message: '修改成功' })
+          this.searchTag = false
+          let act = '修改租赁状态'
+          this.setActivity(obj.id, act)
+        } else {
+          this.$message({ message: res.errorMsg })
+        }
+      }, (rej) => {
+        console.log(rej)
+      }).catch((err) => {
+        console.log(err)
+      })
     },
     isShow (status) {
       let apartment = window.localStorage.getItem('apartmentId')
@@ -444,6 +421,8 @@ export default {
               this.orderForm.renterPhone = ''
               this.orderForm.date = ''
               this.orderForm.time = ''
+              let act = '添加预约信息'
+              this.setActivity(this.orderData.id, act)
             } else {
               this.$message({ message: res.errors.messageCn })
             }

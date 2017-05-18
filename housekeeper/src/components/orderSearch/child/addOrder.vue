@@ -154,6 +154,28 @@
           console.log(err)
         })
       },
+      setActivity (houseId, activityTag) {
+        let username = window.localStorage.getItem('username')
+        let apartment = window.localStorage.getItem('apartmentId')
+        let url = '/manage/activity/addActivity'
+        let data = {
+          userName: username,
+          houseId: houseId,
+          activityTag: activityTag,
+          apartmentId: apartment
+        }
+        fetcher.post(url, data).then((res) => {
+          if (res.success) {
+            console.log(res)
+          } else {
+            this.$message({ message: '未知错误' })
+          }
+        }, (rej) => {
+          console.log(rej)
+        }).catch((err) => {
+          console.log(err)
+        })
+      },
       submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
@@ -164,6 +186,8 @@
               console.log(res)
               if (res.success) {
                 this.$message({ message: '创建订单成功' })
+                let act = '创建订单'
+                this.setActivity(this.form.houseId, act)
                 setTimeout(() => {
                   location.reload()
                 }, 3000)
