@@ -3,6 +3,7 @@ package com.jimikongjian.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +43,17 @@ public class ApartmentController {
 	@ResponseBody
 	public ResponseMessage allServant(){
 		List<Servant> list = apartmentMapper.getAllOwner();
+		if (list.size() > 0) {
+			return res.makeMessage(list, Message.SUCCESS);
+		}
+		return res.makeMessage(Message.UNKNOWN_ERROR);
+	}
+	
+	/*添加公寓信息*/
+	@RequestMapping(value="/addApartment", method = RequestMethod.POST)
+	@ResponseBody
+	public ResponseMessage addApartment(@RequestBody Apartment apartment){
+		List<Apartment> list = apartmentMapper.getApartmentByName(apartment);
 		if (list.size() > 0) {
 			return res.makeMessage(list, Message.SUCCESS);
 		}

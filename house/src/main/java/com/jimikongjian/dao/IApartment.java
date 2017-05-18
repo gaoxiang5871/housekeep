@@ -20,4 +20,11 @@ public interface IApartment {
      * @return
      */
     public List<Servant> getAllOwner();
+    
+    /**
+     * 通过公寓名称，查询数据库中相应的公寓
+     * @param apartment
+     * @return
+     */
+    public List<Apartment> getApartmentByName(Apartment apartment);
 }
