@@ -24,7 +24,7 @@ CREATE TABLE `activity` (
   `userName` varchar(255) NOT NULL,
   `activityTag` varchar(255) NOT NULL,
   `houseId` int(11) NOT NULL,
-  `activityDate` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `activityDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
